@@ -1,5 +1,6 @@
 package com.spring.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +10,7 @@ import com.spring.entity.User;
 import com.spring.security.UserCustody;
 
 @Service
+@Qualifier("userService1")
 public class UserService implements UserDetailsService {
 
 	@Override
