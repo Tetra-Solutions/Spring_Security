@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.customException.EmailExistsException;
+
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -20,5 +22,11 @@ public class UserController {
 			// TODO: handle exception
 			return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String testException() throws EmailExistsException {
+
+		throw new EmailExistsException("This email is already taken");
 	}
 }

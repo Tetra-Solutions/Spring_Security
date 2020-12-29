@@ -1,6 +1,5 @@
 package com.spring.config;
 
-import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -26,27 +25,21 @@ import com.spring.service.UserService;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	@Autowired
 	private JwtAuthorizationFilter jwtAuthorizationFilter;
 
+	@Autowired
 	private JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
+	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+	@Autowired
+	@Qualifier("userService1")
 	private UserService userDetailsService;
 
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 	@Autowired
-	public SecurityConfiguration(JwtAuthorizationFilter jwtAuthorizationFilter,
-			JwtAccessDeniedHandler jwtAccessDeniedHandler, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-			@Qualifier("userService1") UserService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		super();
-		this.jwtAuthorizationFilter = jwtAuthorizationFilter;
-		this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-		this.userDetailsService = userDetailsService;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-	}
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
