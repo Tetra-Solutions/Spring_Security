@@ -14,7 +14,7 @@ public class HttpResponse {
 
 	public HttpResponse(int httpStatusCode, HttpStatus httpStatus, String reason, String message) {
 		super();
-		this.httpStatusCode = httpStatusCode;
+		this.setHttpStatusCode(httpStatusCode);
 		this.httpStatus = httpStatus;
 		this.reason = reason;
 		this.message = message;
@@ -42,6 +42,14 @@ public class HttpResponse {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public int getHttpStatusCode() {
+		return httpStatusCode;
+	}
+
+	public void setHttpStatusCode(int httpStatusCode) {
+		this.httpStatusCode = httpStatusCode;
 	}
 
 }
