@@ -9,6 +9,8 @@ public class User {
 
 	private String username;
 
+	private String email;
+
 	private String password;
 
 	private boolean isActive;
@@ -17,19 +19,23 @@ public class User {
 
 	private String[] authorities;
 
+	private String role;
+
 	public User() {
 
 	}
 
-	public User(Long id, String username, String password, boolean isActive, boolean isNonLocked,
-			String[] authorities) {
+	public User(Long id, String username, String email, String password, boolean isActive, boolean isNonLocked,
+			String[] authorities, String role) {
 		super();
 		this.id = id;
 		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.isActive = isActive;
 		this.isNonLocked = isNonLocked;
 		this.authorities = authorities;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -78,6 +84,22 @@ public class User {
 
 	public void setAuthorities(String[] authorities) {
 		this.authorities = authorities;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
