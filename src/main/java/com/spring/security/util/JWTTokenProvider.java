@@ -43,6 +43,7 @@ public class JWTTokenProvider {
 				.withSubject(userCustody.getUsername()).withArrayClaim(AUTHORITIES, claims)
 				.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				.sign(Algorithm.HMAC512(secret.getBytes()));
+
 	}
 
 	public Authentication getAuthentication(String username, List<GrantedAuthority> authorities,

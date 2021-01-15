@@ -1,2 +1,5 @@
 jwt: 
   secret: 'test'
+
+server:
+  port : 8090

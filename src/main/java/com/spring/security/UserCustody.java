@@ -17,7 +17,7 @@ public class UserCustody implements UserDetails {
 	 * 
 	 */
 	private static final long serialVersionUID = 1189789331569315174L;
-	
+
 	private User user;
 
 	public UserCustody(User user) {
