@@ -50,10 +50,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		// csrf -> cross site request forgery
-		http.csrf().disable().cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and().authorizeRequests().antMatchers(SecurityConstant.PUBLIC_URLS).permitAll().anyRequest()
-				.authenticated().and().exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
+		// csrf -> cross site request forgery, headers().frameOptions() -> in a frame
+		// because it set 'X-Frame-Options' to 'deny'
+		http.headers().frameOptions().disable().and().csrf().disable().cors().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers(SecurityConstant.PUBLIC_URLS).permitAll().anyRequest().authenticated().and()
+				.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 	}
