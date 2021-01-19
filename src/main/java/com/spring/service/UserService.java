@@ -36,7 +36,10 @@ public class UserService implements UserDetailsService {
 
 		User user = new User();
 		user.setUsername("dejvis06");
+		user.setPassword(encodePassword("password"));
+		user.setNonLocked(true);
 		user.setAuthorities(ROLE_USER.getAuthorities());
+		user.setActive(true);
 
 		return new UserCustody(user);
 	}
@@ -66,8 +69,10 @@ public class UserService implements UserDetailsService {
 
 		User user = new User();
 		user.setUsername("dejvis06");
-		user.setPassword("password");
+		user.setPassword(encodePassword("password"));
 		user.setNonLocked(true);
+		user.setActive(true);
+		user.setRole(ROLE_USER.toString());
 		user.setAuthorities(ROLE_USER.getAuthorities());
 
 		return user;

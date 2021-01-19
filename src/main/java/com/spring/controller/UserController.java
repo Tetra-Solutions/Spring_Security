@@ -80,10 +80,10 @@ public class UserController {
 
 	private void authenticate(String username, String password) {
 		try {
+
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			System.err.println(e);
 		}
 	}
 }
