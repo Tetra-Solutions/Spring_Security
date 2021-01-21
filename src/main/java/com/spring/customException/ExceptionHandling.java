@@ -28,7 +28,7 @@ public class ExceptionHandling {
 	private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
 
 		HttpResponse httpResponse = new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase(),
-				message.toUpperCase());
+				message.toUpperCase(), null);
 
 		return new ResponseEntity<HttpResponse>(httpResponse, httpStatus);
 	}

@@ -2,7 +2,7 @@ package com.spring.util;
 
 import org.springframework.http.HttpStatus;
 
-public class HttpResponse {
+public class HttpResponse<T> {
 
 	private int httpStatusCode;
 
@@ -12,12 +12,15 @@ public class HttpResponse {
 
 	private String message;
 
-	public HttpResponse(int httpStatusCode, HttpStatus httpStatus, String reason, String message) {
+	private T object;
+
+	public HttpResponse(int httpStatusCode, HttpStatus httpStatus, String reason, String message, T object) {
 		super();
 		this.setHttpStatusCode(httpStatusCode);
 		this.httpStatus = httpStatus;
 		this.reason = reason;
 		this.message = message;
+		this.object = object;
 	}
 
 	public HttpStatus getHttpStatus() {
@@ -50,6 +53,14 @@ public class HttpResponse {
 
 	public void setHttpStatusCode(int httpStatusCode) {
 		this.httpStatusCode = httpStatusCode;
+	}
+
+	public T getObject() {
+		return object;
+	}
+
+	public void setObject(T object) {
+		this.object = object;
 	}
 
 }
