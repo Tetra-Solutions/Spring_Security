@@ -37,8 +37,7 @@ public class UserController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<HttpResponse> register(@RequestBody User user)
-			throws EmailExistsException, UsernameExistsException {
+	public ResponseEntity<HttpResponse> register(@RequestBody User user) {
 
 		try {
 			User newUser = userService.register(user);
