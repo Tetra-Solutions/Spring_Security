@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.spring.util.HttpResponse;
 
 @RestControllerAdvice
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ExceptionHandling {
 
 	private static final String ACCOUNT_DISABLED = "Your account has been disabled.";
