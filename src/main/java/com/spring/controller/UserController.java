@@ -42,12 +42,9 @@ public class UserController {
 
 		try {
 			User newUser = userService.register(user);
-
 			return new ResponseEntity<>(new HttpResponse(200, HttpStatus.OK, null, "Success", newUser), HttpStatus.OK);
-		} catch (UsernameExistsException e) {
-			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, ExceptionUtils.getStackTrace(e),
-					e.getMessage(), null), HttpStatus.BAD_REQUEST);
-		} catch (EmailExistsException e) {
+
+		} catch (UsernameExistsException | EmailExistsException e) {
 			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, ExceptionUtils.getStackTrace(e),
 					e.getMessage(), null), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
