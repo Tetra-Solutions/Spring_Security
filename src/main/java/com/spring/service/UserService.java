@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public User register(User user) throws EmailExistsException, UsernameExistsException {
+	public User register(User user) throws EmailExistsException, UsernameExistsException, Exception {
 
 		validateUsernameAndEmail(user.getUsername(), user.getEmail());
 
