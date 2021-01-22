@@ -1,9 +1,5 @@
 package com.spring.controller;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,6 +45,9 @@ public class UserController {
 
 			return new ResponseEntity<>(new HttpResponse(200, HttpStatus.OK, null, "Success", newUser), HttpStatus.OK);
 		} catch (UsernameExistsException e) {
+			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, ExceptionUtils.getStackTrace(e),
+					e.getMessage(), null), HttpStatus.BAD_REQUEST);
+		} catch (EmailExistsException e) {
 			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, ExceptionUtils.getStackTrace(e),
 					e.getMessage(), null), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {

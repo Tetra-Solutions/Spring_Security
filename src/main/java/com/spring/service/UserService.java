@@ -50,13 +50,9 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public User register(User user) throws EmailExistsException, UsernameExistsException {
 
-		if (validateUsername(user.getUsername()))
-			throw new UsernameExistsException(USERNAME_ALREADY_EXISTS);
+		validateUsernameAndEmail(user.getUsername(), user.getEmail());
 
-		String encodedPassword = encodePassword(user.getPassword());
-
-		user.setEmail("test");
-		user.setPassword(encodedPassword);
+		user.setPassword(encodePassword(user.getPassword()));
 		user.setActive(true);
 		user.setNonLocked(true);
 		user.setRole(ROLE_USER.name());
@@ -79,53 +75,42 @@ public class UserService implements UserDetailsService {
 
 	public User findByEmail(String email) {
 
-		return null;
+		try {
+			return (User) entityManager.createQuery("select user from User user where user.email =:email", User.class)
+					.setParameter("email", email).getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
-	public boolean validateUsername(String username) {
+	public void validateUsername(String username) throws UsernameExistsException {
 
-		return entityManager.createQuery(
+		boolean exists = entityManager.createQuery(
 				"select case when user is not null then true else false end from User user where user.username =: username ",
 				Boolean.class).setParameter("username", username).getSingleResult();
+
+		if (exists)
+			throw new UsernameExistsException(USERNAME_ALREADY_EXISTS);
 	}
 
-	private User validateUsernameAndEmail(String currentUsername, String newUsername, String newEmail)
+	public void validateEmail(String email) throws EmailExistsException {
+
+		boolean exists = entityManager.createQuery(
+				"select case when user is not null then true else false end from User user where user.email =: email ",
+				Boolean.class).setParameter("email", email).getSingleResult();
+
+		if (exists)
+			throw new EmailExistsException(EMAIL_ALREADY_EXISTS);
+	}
+
+	private void validateUsernameAndEmail(String username, String email)
 			throws EmailExistsException, UsernameExistsException {
-		/*
-		 * User userByUsername = findByUsername(newUsername); User userByNewEmail =
-		 * findByEmail(newEmail); User userByNewUsername = findByUsername(newUsername);
-		 * 
-		 * if (StringUtils.isNotBlank(currentUsername)) {
-		 * 
-		 * User currentUser = findByUsername(currentUsername); if (currentUsername ==
-		 * null) { throw new UsernameNotFoundException(USER_NOT_FOUND_BY_USERNAME +
-		 * currentUsername); }
-		 * 
-		 * // Validate username ,if !currentUser.getId().equals(userByUsername.getId()
-		 * its // a new user if (userByNewUsername != null &&
-		 * !currentUser.getId().equals(userByNewUsername.getId())) { throw new
-		 * UsernameExistsException(USERNAME_ALREADY_EXISTS); } // Validate email if
-		 * (userByNewUsername != null &&
-		 * !currentUser.getId().equals(userByNewUsername.getId())) { throw new
-		 * EmailExistsException(EMAIL_ALREADY_EXISTS); } return currentUser; } else {
-		 * 
-		 * if (userByUsername != null) { throw new
-		 * UsernameExistsException(USERNAME_ALREADY_EXISTS); } if (userByNewEmail !=
-		 * null) { throw new EmailExistsException(EMAIL_ALREADY_EXISTS); } }
-		 */
-		return null;
-	}
 
-	private String generatePassword() {
-
-		return RandomStringUtils.randomAlphanumeric(10);
+		validateUsername(username);
+		validateEmail(email);
 	}
 
 	private String encodePassword(String password) {
 		return passwordEncoder.encode(password);
-	}
-
-	private boolean passwordsMatch(String password, String encodedPassword) {
-		return passwordEncoder.matches(password, encodedPassword);
 	}
 }
