@@ -2,6 +2,8 @@ package com.spring.service;
 
 import static com.spring.enumeration.Role.*;
 
+import java.util.concurrent.ExecutionException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -31,6 +33,9 @@ public class UserService implements UserDetailsService {
 	private static final String USERNAME_ALREADY_EXISTS = "Username already exists";
 
 	@Autowired
+	private LoginAttemptService loginAttemptService;
+
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@PersistenceContext
@@ -43,6 +48,8 @@ public class UserService implements UserDetailsService {
 
 		if (user == null)
 			throw new UsernameNotFoundException(USER_NOT_FOUND_BY_USERNAME + username);
+		
+		validateLoginAttempt(user);
 
 		return new UserCustody(user);
 	}
@@ -112,5 +119,17 @@ public class UserService implements UserDetailsService {
 
 	private String encodePassword(String password) {
 		return passwordEncoder.encode(password);
+	}
+
+	private void validateLoginAttempt(User user) {
+
+		if (user.isNonLocked()) {
+
+			if (loginAttemptService.hasExcedeedMaxNoAttempts(user.getUsername())) {
+				user.setNonLocked(false);
+			} else {
+				user.setNonLocked(true);
+			}
+		}
 	}
 }
