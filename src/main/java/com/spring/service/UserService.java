@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
 
 		if (user == null)
 			throw new UsernameNotFoundException(USER_NOT_FOUND_BY_USERNAME + username);
-		
+
 		validateLoginAttempt(user);
 
 		return new UserCustody(user);
@@ -90,31 +90,32 @@ public class UserService implements UserDetailsService {
 		}
 	}
 
-	public void validateUsername(String username) throws UsernameExistsException {
+	public boolean validateUsername(String username) throws UsernameExistsException {
 
-		boolean exists = entityManager.createQuery(
-				"select case when user is not null then true else false end from User user where user.username =: username ",
-				Boolean.class).setParameter("username", username).getSingleResult();
+		Long maxResults = (long) entityManager
+				.createQuery("select count(user.id) from User user where user.username =: username ", Long.class)
+				.setParameter("username", username).getSingleResult();
 
-		if (exists)
-			throw new UsernameExistsException(USERNAME_ALREADY_EXISTS);
+		return maxResults >= 1;
 	}
 
-	public void validateEmail(String email) throws EmailExistsException {
+	public boolean validateEmail(String email) throws EmailExistsException {
 
-		boolean exists = entityManager.createQuery(
-				"select case when user is not null then true else false end from User user where user.email =: email ",
-				Boolean.class).setParameter("email", email).getSingleResult();
+		Long maxResults = (long) entityManager
+				.createQuery("select count(user.id) from User user where user.email =: email ", Long.class)
+				.setParameter("email", email).getSingleResult();
 
-		if (exists)
-			throw new EmailExistsException(EMAIL_ALREADY_EXISTS);
+		return maxResults >= 1;
 	}
 
 	private void validateUsernameAndEmail(String username, String email)
 			throws EmailExistsException, UsernameExistsException {
 
-		validateUsername(username);
-		validateEmail(email);
+		if (validateUsername(username))
+			throw new UsernameExistsException(USERNAME_ALREADY_EXISTS);
+
+		if (validateEmail(email))
+			throw new EmailExistsException(EMAIL_ALREADY_EXISTS);
 	}
 
 	private String encodePassword(String password) {

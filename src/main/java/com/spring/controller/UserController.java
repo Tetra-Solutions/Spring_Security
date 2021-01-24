@@ -44,9 +44,10 @@ public class UserController {
 			return new ResponseEntity<>(new HttpResponse(200, HttpStatus.OK, null, "Success", newUser), HttpStatus.OK);
 
 		} catch (UsernameExistsException | EmailExistsException e) {
-			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, ExceptionUtils.getStackTrace(e),
-					e.getMessage(), null), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, null, e.getMessage(), null),
+					HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(
 					new HttpResponse(500, HttpStatus.INTERNAL_SERVER_ERROR, null, e.getMessage(), null),
 					HttpStatus.INTERNAL_SERVER_ERROR);
@@ -71,8 +72,8 @@ public class UserController {
 					HttpStatus.OK);
 		} catch (BadCredentialsException e) {
 
-			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, ExceptionUtils.getStackTrace(e),
-					e.getMessage(), null), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, null, e.getMessage(), null),
+					HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 
 			return new ResponseEntity<>(
