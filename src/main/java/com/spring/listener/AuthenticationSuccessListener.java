@@ -5,6 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
+import com.spring.security.UserCustody;
 import com.spring.service.LoginAttemptService;
 
 @Component
@@ -16,7 +17,7 @@ public class AuthenticationSuccessListener {
 	@EventListener
 	public void onAuthenticationSuccess(AuthenticationSuccessEvent event) {
 
-		String principal = (String) event.getAuthentication().getPrincipal();
-		loginAttemptService.invalidateFromCache(principal);
+		UserCustody principal = (UserCustody) event.getAuthentication().getPrincipal();
+		loginAttemptService.invalidateFromCache(principal.getUsername());
 	}
 }

@@ -22,6 +22,7 @@ import com.spring.util.HttpResponse;
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 

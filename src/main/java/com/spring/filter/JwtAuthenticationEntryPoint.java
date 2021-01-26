@@ -21,6 +21,7 @@ import com.spring.util.HttpResponse;
 public class JwtAuthenticationEntryPoint extends Http403ForbiddenEntryPoint {
 
 	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
 			throws IOException {
 

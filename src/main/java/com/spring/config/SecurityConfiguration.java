@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.spring.enumeration.Role;
 import com.spring.filter.JwtAccessDeniedHandler;
 import com.spring.filter.JwtAuthenticationEntryPoint;
 import com.spring.filter.JwtAuthorizationFilter;
@@ -54,10 +55,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		// because it set 'X-Frame-Options' to 'deny'
 		http.headers().frameOptions().disable().and().csrf().disable().cors().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers("/user/getUser").access("hasAuthority('user:read')")
 				.antMatchers(SecurityConstant.PUBLIC_URLS).permitAll().anyRequest().authenticated().and()
 				.exceptionHandling().accessDeniedHandler(jwtAccessDeniedHandler)
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
 	}
 
 	@Bean

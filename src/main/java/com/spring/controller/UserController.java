@@ -8,10 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.function.ServerRequest.Headers;
 
 import com.spring.customException.EmailExistsException;
 import com.spring.customException.UsernameExistsException;
@@ -75,7 +77,7 @@ public class UserController {
 			return new ResponseEntity<>(new HttpResponse(400, HttpStatus.BAD_REQUEST, null, e.getMessage(), null),
 					HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 			return new ResponseEntity<>(
 					new HttpResponse(500, HttpStatus.INTERNAL_SERVER_ERROR, null, e.getMessage(), null),
 					HttpStatus.INTERNAL_SERVER_ERROR);
@@ -105,6 +107,7 @@ public class UserController {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add(SecurityConstant.JWT_TOKEN_HEADER, jwtTokenProvider.generateJwtToken(userCustody));
+
 		return httpHeaders;
 	}
 
